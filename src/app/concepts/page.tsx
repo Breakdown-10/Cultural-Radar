@@ -131,7 +131,7 @@ export default function ConceptComparisonPage() {
             Select a Concept to Generate the Comprehensive Event Strategy
           </h2>
           <span className="text-xs text-slate-400 font-mono">
-            Total Budget: ${brief.totalBudget.toLocaleString()} {brief.currency}
+            Total Budget: ${brief.totalBudget.toLocaleString('en-US')} {brief.currency}
           </span>
         </div>
 

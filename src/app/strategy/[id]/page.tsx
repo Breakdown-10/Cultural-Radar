@@ -120,7 +120,7 @@ export default function StrategyDashboardPage() {
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-white">{concept.title}</h1>
           <p className="mt-1 text-xs sm:text-sm text-slate-400">
-            {brief.name} • {brief.location.city}, {brief.location.country} • {brief.estimatedAttendance.toLocaleString()} Guests
+            {brief.name} • {brief.location.city}, {brief.location.country} • {brief.estimatedAttendance.toLocaleString('en-US')} Guests
           </p>
         </div>
 
