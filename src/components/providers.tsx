@@ -3,6 +3,7 @@
 import React from 'react';
 import { CultureRadarProvider, useCultureRadar } from '@/lib/store';
 import { Navbar } from './navbar';
+import { Footer } from './footer';
 import { CulturalEvidenceDrawer } from './cultural-evidence-drawer';
 
 function DrawerRenderer() {
@@ -21,6 +22,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen flex-col bg-[#090a0f] text-slate-100">
         <Navbar />
         <main className="flex-1">{children}</main>
+        <Footer />
         <DrawerRenderer />
       </div>
     </CultureRadarProvider>

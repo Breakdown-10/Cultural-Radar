@@ -47,6 +47,12 @@ export default function HomePage() {
           Transform audience taste profiles into evidence-grounded entertainment, sensory design, and brand partnerships with Qloo Cultural Intelligence.
         </p>
 
+        {/* Live Evaluation Callout for Judges */}
+        <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-[#121522]/90 backdrop-blur px-4 py-1.5 text-xs text-indigo-200">
+          <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Hackathon Evaluation: Click &ldquo;Explore Dubai Showcase&rdquo; for the live 5-stage research loop.</span>
+        </div>
+
         {/* CTA Buttons */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link

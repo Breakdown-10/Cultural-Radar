@@ -13,7 +13,8 @@ import {
   Compass,
   ArrowRight,
   Plus,
-  Trash2
+  Trash2,
+  RotateCcw
 } from 'lucide-react';
 
 export default function BriefBuilderPage() {
@@ -31,6 +32,24 @@ export default function BriefBuilderPage() {
       setFormData(selected);
       setErrors({});
     }
+  };
+
+  const handleResetBlank = () => {
+    setFormData({
+      id: `brief_${Date.now()}`,
+      name: '',
+      location: { city: '', country: '', venueType: '' },
+      eventType: 'lifestyle_gathering',
+      targetAudience: { demographicSummary: '', interests: [], vibeOrAtmosphere: '' },
+      estimatedAttendance: 500,
+      totalBudget: 50000,
+      currency: 'USD',
+      objectives: [],
+      anchorEntities: { artists: [], brands: [], places: [] },
+      excludedThemes: [],
+      createdAt: new Date().toISOString()
+    });
+    setErrors({});
   };
 
   const addArtist = () => {
@@ -131,6 +150,15 @@ export default function BriefBuilderPage() {
               {s.location.city}
             </button>
           ))}
+          <button
+            type="button"
+            onClick={handleResetBlank}
+            className="flex items-center gap-1 rounded-md border border-[#272d3f] bg-[#0d0f17] px-2.5 py-1 text-xs text-slate-400 hover:border-red-500/40 hover:text-red-300 transition-colors"
+            title="Start with a blank brief form"
+          >
+            <RotateCcw className="h-3 w-3" />
+            <span>Clear Blank</span>
+          </button>
         </div>
       </div>
 

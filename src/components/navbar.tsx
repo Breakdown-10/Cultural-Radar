@@ -24,6 +24,14 @@ export function Navbar() {
           </div>
         </Link>
 
+        {/* Center: Live Qloo Taste Graph Status */}
+        <div className="hidden md:flex items-center gap-2">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-[#0d1419] px-2.5 py-1 text-[11px] font-medium text-emerald-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Qloo Taste Graph: Active</span>
+          </div>
+        </div>
+
         {/* Navigation Links */}
         <nav className="flex items-center gap-1 sm:gap-2">
           <Link
@@ -50,7 +58,7 @@ export function Navbar() {
             href="https://docs.qloo.com/reference/api-overview"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:text-white"
+            className="hidden sm:flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:text-white"
           >
             <span>Qloo Docs</span>
             <ExternalLink className="h-3 w-3" />

@@ -16,7 +16,10 @@ import {
   Tag,
   MapPin,
   Clock,
-  Compass
+  Compass,
+  Download,
+  Share2,
+  Check
 } from 'lucide-react';
 
 export default function StrategyDashboardPage() {
@@ -91,8 +94,32 @@ export default function StrategyDashboardPage() {
     }
   };
 
+  const [copiedLink, setCopiedLink] = useState(false);
+
   const handlePrintPdf = () => {
     window.print();
+  };
+
+  const handleDownloadJson = () => {
+    if (!strategyReport) return;
+    const jsonStr = JSON.stringify(strategyReport, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `culture-radar-strategy-${brief.id}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCopyLink = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    }
   };
 
   if (!strategyReport) {
@@ -125,12 +152,37 @@ export default function StrategyDashboardPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2.5 no-print">
+        <div className="flex flex-wrap items-center gap-2.5 no-print">
+          <button
+            onClick={handleCopyLink}
+            className="flex items-center gap-1.5 rounded-lg border border-[#272d3f] bg-[#121520] px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-slate-500 hover:text-white transition-all"
+          >
+            {copiedLink ? (
+              <>
+                <Check className="h-3.5 w-3.5 text-emerald-400" />
+                <span className="text-emerald-300">Link Copied!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="h-3.5 w-3.5 text-indigo-400" />
+                <span>Share Link</span>
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={handleDownloadJson}
+            className="flex items-center gap-1.5 rounded-lg border border-[#272d3f] bg-[#121520] px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-slate-500 hover:text-white transition-all"
+          >
+            <Download className="h-3.5 w-3.5 text-emerald-400" />
+            <span>Export JSON</span>
+          </button>
+
           <button
             onClick={handlePrintPdf}
             className="flex items-center gap-1.5 rounded-lg border border-[#272d3f] bg-[#121520] px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-slate-500 hover:text-white transition-all"
           >
-            <Printer className="h-3.5 w-3.5" />
+            <Printer className="h-3.5 w-3.5 text-purple-400" />
             <span>Print to PDF</span>
           </button>
         </div>
