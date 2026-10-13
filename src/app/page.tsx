@@ -123,7 +123,7 @@ export default function HomePage() {
                       <MapPin className="h-3 w-3" />
                       {sample.location.city}
                     </span>
-                    <span className="font-mono text-slate-300">${sample.totalBudget.toLocaleString()}</span>
+                    <span className="font-mono text-slate-300">${sample.totalBudget.toLocaleString('en-US')}</span>
                   </div>
 
                   <h3 className="mt-3 text-base font-bold text-white group-hover:text-indigo-300 transition-colors">

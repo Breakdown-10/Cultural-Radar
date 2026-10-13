@@ -27,12 +27,12 @@ export const EventBriefSchema = z.object({
     interests: z.array(z.string()).default([]),
     vibeOrAtmosphere: z.string().min(2, 'Desired vibe/atmosphere is required')
   }),
-  estimatedAttendance: z
+  estimatedAttendance: z.coerce
     .number()
     .int()
     .positive('Attendance must be a positive number')
     .min(10, 'Minimum attendance is 10'),
-  totalBudget: z
+  totalBudget: z.coerce
     .number()
     .positive('Budget must be greater than 0')
     .min(1000, 'Minimum budget is 1,000'),

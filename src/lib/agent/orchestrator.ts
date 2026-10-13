@@ -67,15 +67,17 @@ export class AgentOrchestrator {
 
       if (searchRes.success && searchRes.data.length > 0) {
         const topMatch = searchRes.data[0];
-        resolvedEntityIds.push(topMatch.id);
+        if (topMatch.id) {
+          resolvedEntityIds.push(topMatch.id);
+        }
 
         evidenceRecords.push({
-          id: `ev_anchor_${topMatch.id}`,
-          source: searchRes.data[0].id.includes('mock') ? 'qloo_mock_fixture' : 'qloo',
+          id: `ev_anchor_${topMatch.id || Math.random().toString(36).slice(2)}`,
+          source: (topMatch.id && topMatch.id.includes('mock')) ? 'qloo_mock_fixture' : 'qloo',
           operation: 'search',
           entityId: topMatch.id,
           entityName: topMatch.name,
-          entityType: topMatch.type as CulturalEvidenceRecord['entityType'],
+          entityType: (topMatch.type as CulturalEvidenceRecord['entityType']) || 'urn:entity:artist',
           finding: `Validated user anchor entity "${topMatch.name}" (${topMatch.type}) with popularity ${(topMatch.popularity ?? 0.8).toFixed(2)}.`,
           popularity: topMatch.popularity,
           queryContext: {
@@ -105,11 +107,11 @@ export class AgentOrchestrator {
       biasTrends: 'medium'
     });
 
-    if (artistInsights.success) {
+    if (artistInsights.success && Array.isArray(artistInsights.data)) {
       artistInsights.data.forEach((artist, idx) => {
         evidenceRecords.push({
           id: `ev_artist_${artist.id || idx}`,
-          source: artist.id.includes('mock') ? 'qloo_mock_fixture' : 'qloo',
+          source: (artist.id && artist.id.includes('mock')) ? 'qloo_mock_fixture' : 'qloo',
           operation: 'insights',
           entityId: artist.id,
           entityName: artist.name,
@@ -134,11 +136,11 @@ export class AgentOrchestrator {
       take: 4
     });
 
-    if (brandInsights.success) {
+    if (brandInsights.success && Array.isArray(brandInsights.data)) {
       brandInsights.data.forEach((brand, idx) => {
         evidenceRecords.push({
           id: `ev_brand_${brand.id || idx}`,
-          source: brand.id.includes('mock') ? 'qloo_mock_fixture' : 'qloo',
+          source: (brand.id && brand.id.includes('mock')) ? 'qloo_mock_fixture' : 'qloo',
           operation: 'insights',
           entityId: brand.id,
           entityName: brand.name,
@@ -159,14 +161,15 @@ export class AgentOrchestrator {
     // 2c. Affinity Venues / F&B Places
     const placeInsights = await qloo.getInsights({
       filterType: 'urn:entity:place',
+      signalInterestsEntities: resolvedEntityIds.length > 0 ? resolvedEntityIds.slice(0, 3) : undefined,
       take: 3
     });
 
-    if (placeInsights.success) {
+    if (placeInsights.success && Array.isArray(placeInsights.data)) {
       placeInsights.data.forEach((place, idx) => {
         evidenceRecords.push({
           id: `ev_place_${place.id || idx}`,
-          source: place.id.includes('mock') ? 'qloo_mock_fixture' : 'qloo',
+          source: (place.id && place.id.includes('mock')) ? 'qloo_mock_fixture' : 'qloo',
           operation: 'insights',
           entityId: place.id,
           entityName: place.name,
@@ -272,6 +275,7 @@ Remember:
       model: google(process.env.GEMINI_MODEL || 'gemini-2.0-flash'),
       system: AGENT_SYSTEM_PROMPT,
       prompt,
+      abortSignal: AbortSignal.timeout(25000),
       schema: z.object({
         concepts: z.array(
           z.object({

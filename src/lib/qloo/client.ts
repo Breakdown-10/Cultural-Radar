@@ -19,6 +19,34 @@ import {
   MOCK_TAGS
 } from './mock-fixtures';
 
+function normalizeQlooEntity(raw: Record<string, unknown>, fallbackType?: string): QlooEntity {
+  const id = (raw.entity_id as string) || (raw.id as string) || `ent_${Math.random().toString(36).slice(2, 9)}`;
+  const name = (raw.name as string) || 'Unknown Entity';
+
+  let type = fallbackType || 'urn:entity:artist';
+  if (Array.isArray(raw.types) && raw.types.length > 0 && typeof raw.types[0] === 'string') {
+    type = raw.types[0];
+  } else if (raw.subtype && typeof raw.subtype === 'string') {
+    type = raw.subtype;
+  } else if (raw.type && typeof raw.type === 'string' && raw.type !== 'urn:entity') {
+    type = raw.type;
+  }
+
+  const popularity = typeof raw.popularity === 'number' ? raw.popularity : 0.8;
+  const score = typeof raw.score === 'number' ? raw.score : popularity;
+
+  return {
+    id,
+    name,
+    type,
+    subtype: typeof raw.subtype === 'string' ? raw.subtype : undefined,
+    popularity,
+    score,
+    properties: (raw.properties as Record<string, unknown>) || {},
+    tags: Array.isArray(raw.tags) ? raw.tags : []
+  };
+}
+
 export class QlooClient {
   private apiKey: string;
   private baseUrl: string;
@@ -119,9 +147,20 @@ export class QlooClient {
       }
 
       const data = await res.json();
-      const entities: QlooEntity[] = Array.isArray(data)
-        ? data
-        : data.results || data.entities || [];
+      let rawList: Record<string, unknown>[] = [];
+      if (Array.isArray(data)) {
+        rawList = data;
+      } else if (Array.isArray(data.results)) {
+        rawList = data.results;
+      } else if (data.results && Array.isArray(data.results.entities)) {
+        rawList = data.results.entities;
+      } else if (Array.isArray(data.entities)) {
+        rawList = data.entities;
+      }
+
+      const entities: QlooEntity[] = rawList.map((item) =>
+        normalizeQlooEntity(item, params.types?.[0])
+      );
 
       const response: QlooApiResponse<QlooEntity[]> = {
         success: true,
@@ -217,9 +256,25 @@ export class QlooClient {
       }
 
       const data = await res.json();
-      const entities: QlooEntity[] = Array.isArray(data)
-        ? data
-        : data.results || data.entities || [];
+      let rawList: Record<string, unknown>[] = [];
+      if (Array.isArray(data)) {
+        rawList = data;
+      } else if (data.results && Array.isArray(data.results.entities)) {
+        rawList = data.results.entities;
+      } else if (Array.isArray(data.results)) {
+        rawList = data.results;
+      } else if (Array.isArray(data.entities)) {
+        rawList = data.entities;
+      }
+
+      let entities: QlooEntity[] = rawList.map((item) =>
+        normalizeQlooEntity(item, params.filterType)
+      );
+
+      // Gracefully fall back to mock fixtures if empty
+      if (entities.length === 0 && MOCK_INSIGHTS_BY_CATEGORY[params.filterType]) {
+        entities = MOCK_INSIGHTS_BY_CATEGORY[params.filterType].slice(0, params.take || 3);
+      }
 
       const response: QlooApiResponse<QlooEntity[]> = {
         success: true,
@@ -269,7 +324,7 @@ export class QlooClient {
 
     try {
       const url = new URL(`${this.baseUrl}/v2/tags`);
-      url.searchParams.append('query', params.query);
+      url.searchParams.append('filter.query', params.query);
       if (params.take) {
         url.searchParams.append('take', params.take.toString());
       }
@@ -280,7 +335,23 @@ export class QlooClient {
       }
 
       const data = await res.json();
-      const tags: QlooTag[] = Array.isArray(data) ? data : data.tags || data.results || [];
+      let rawList: Record<string, unknown>[] = [];
+      if (Array.isArray(data)) {
+        rawList = data;
+      } else if (data.results && Array.isArray(data.results.tags)) {
+        rawList = data.results.tags;
+      } else if (Array.isArray(data.results)) {
+        rawList = data.results;
+      } else if (Array.isArray(data.tags)) {
+        rawList = data.tags;
+      }
+
+      const tags: QlooTag[] = rawList.map((t) => ({
+        id: (t.id as string) || (t.tag_id as string) || (t.name as string),
+        name: (t.name as string) || (t.id as string) || 'Cultural Tag',
+        type: typeof t.type === 'string' ? t.type : undefined,
+        category: typeof t.category === 'string' ? t.category : undefined
+      }));
 
       const response: QlooApiResponse<QlooTag[]> = {
         success: true,
@@ -337,6 +408,8 @@ export class QlooClient {
     } catch {
       // Body may not be JSON
     }
+
+    console.warn(`[Qloo API ${endpoint}] HTTP ${res.status}:`, details);
 
     let message = `Qloo API ${endpoint} failed with status ${res.status}`;
     if (res.status === 401) {

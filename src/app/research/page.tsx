@@ -95,7 +95,8 @@ export default function ResearchWorkspacePage() {
         });
 
         if (!planRes.ok) {
-          throw new Error('Research planning API failed');
+          const errData = await planRes.json().catch(() => null);
+          throw new Error(errData?.error || `Research planning API failed (HTTP ${planRes.status})`);
         }
 
         const planData = await planRes.json();
@@ -125,7 +126,8 @@ export default function ResearchWorkspacePage() {
         });
 
         if (!conceptRes.ok) {
-          throw new Error('Concept synthesis API failed');
+          const errData = await conceptRes.json().catch(() => null);
+          throw new Error(errData?.error || `Concept synthesis API failed (HTTP ${conceptRes.status})`);
         }
 
         const conceptData = await conceptRes.json();
@@ -137,7 +139,8 @@ export default function ResearchWorkspacePage() {
         setProgressPercent(100);
         setIsDone(true);
       } catch (err) {
-        addLog(`Error: ${err instanceof Error ? err.message : 'Research pipeline encountered an issue'}`);
+        const errorMsg = err instanceof Error ? err.message : 'Research pipeline encountered an issue';
+        addLog(`Error: ${errorMsg}`);
         setStages((prev) =>
           prev.map((s) => (s.status === 'running' ? { ...s, status: 'error' } : s))
         );
@@ -173,7 +176,7 @@ export default function ResearchWorkspacePage() {
           <span className="text-slate-400 block">Brief Target</span>
           <span className="font-bold text-white block">{brief.name}</span>
           <span className="text-slate-400 block font-mono text-[11px]">
-            {brief.location.city} • ${brief.totalBudget.toLocaleString()} USD
+            {brief.location.city} • ${brief.totalBudget.toLocaleString('en-US')} USD
           </span>
         </div>
       </div>
