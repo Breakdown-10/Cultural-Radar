@@ -70,17 +70,17 @@ export default function ConceptComparisonPage() {
   if (concepts.length === 0) return null;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 min-h-screen">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-8 border-b border-[#1f2433]">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-8 border-b border-white/[0.08]">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 text-xs font-medium text-indigo-300 mb-2">
-            <Layers className="h-3 w-3" />
-            <span>Tri-Concept Evaluation</span>
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/[0.05] px-3 py-0.5 text-xs font-mono text-amber-200/90 mb-2.5">
+            <Layers className="h-3 w-3 text-amber-400" />
+            <span>TRI-CONCEPT CREATIVE SYNTHESIS</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Event Concept Options</h1>
-          <p className="mt-1 text-xs sm:text-sm text-slate-400">
-            Three differentiated creative directions grounded in Qloo cultural affinities for &quot;{brief.name}&quot;.
+          <h1 className="text-3xl sm:text-4xl font-serif font-medium text-white tracking-tight">Curated Event Directions</h1>
+          <p className="mt-1 text-xs sm:text-sm text-zinc-400 font-sans">
+            Three differentiated creative concepts grounded in Qloo cultural affinities for &quot;{brief.name}&quot;.
           </p>
         </div>
 
@@ -90,23 +90,23 @@ export default function ConceptComparisonPage() {
             type="button"
             disabled={isLoadingBaseline}
             onClick={handleToggleBaseline}
-            className={`flex items-center gap-2 rounded-lg border px-4 py-2.5 text-xs font-semibold transition-all ${
+            className={`flex items-center gap-2.5 rounded-xl border px-5 py-2.5 text-xs font-mono transition-all ${
               showBaseline
-                ? 'border-indigo-500 bg-indigo-600/20 text-white ring-1 ring-indigo-500'
-                : 'border-[#272d3f] bg-[#121520] text-slate-300 hover:border-slate-500 hover:text-white'
+                ? 'border-amber-400/40 bg-amber-400/10 text-amber-200 ring-1 ring-amber-400/30'
+                : 'border-white/[0.1] bg-white/[0.03] text-zinc-300 hover:border-white/[0.25] hover:text-white'
             }`}
           >
             {isLoadingBaseline ? (
-              <Loader2 className="h-4 w-4 text-indigo-400 animate-spin" />
+              <Loader2 className="h-3.5 w-3.5 text-amber-400 animate-spin" />
             ) : (
-              <Scale className="h-4 w-4 text-indigo-400" />
+              <Scale className="h-3.5 w-3.5 text-amber-400" />
             )}
             <span>
               {isLoadingBaseline
-                ? 'Generating Baseline...'
+                ? 'COMPUTING BASELINE...'
                 : showBaseline
-                ? 'Hide Baseline Compare'
-                : 'Compare with Generic LLM'}
+                ? 'HIDE BASELINE COMPARISON'
+                : 'COMPARE VS. GENERIC LLM'}
             </span>
           </button>
         </div>
@@ -114,7 +114,7 @@ export default function ConceptComparisonPage() {
 
       {/* Side-by-Side Baseline Comparison View (If Toggled) */}
       {showBaseline && baselineData && (
-        <div className="mt-8 animate-in fade-in">
+        <div className="mt-8 animate-in fade-in duration-300">
           <BaselineComparison
             baselineConcept={baselineData.concept}
             qlooConcept={concepts[0]}
@@ -124,14 +124,14 @@ export default function ConceptComparisonPage() {
       )}
 
       {/* Tri-Concept Grid */}
-      <div className="mt-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold text-white flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-indigo-400" />
-            Select a Concept to Generate the Comprehensive Event Strategy
+      <div className="mt-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+            Select a direction to generate comprehensive strategy & production plan
           </h2>
-          <span className="text-xs text-slate-400 font-mono">
-            Total Budget: ${brief.totalBudget.toLocaleString('en-US')} {brief.currency}
+          <span className="text-xs text-amber-200/90 font-mono px-2.5 py-1 rounded bg-white/[0.04] border border-white/[0.06]">
+            Total Spend Target: ${brief.totalBudget.toLocaleString('en-US')} {brief.currency}
           </span>
         </div>
 

@@ -23,31 +23,21 @@ export function ConceptCard({
   const brand = concept.brandPartnerships.candidateBrands[0];
   const vendor = concept.foodAndLifestyle.candidateVendors[0];
 
-  const profileColors: Record<number, { bg: string; border: string; text: string }> = {
-    1: { bg: 'bg-indigo-500/10', border: 'border-indigo-500/30', text: 'text-indigo-400' },
-    2: { bg: 'bg-pink-500/10', border: 'border-pink-500/30', text: 'text-pink-400' },
-    3: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', text: 'text-emerald-400' }
-  };
-
-  const style = profileColors[concept.conceptNumber] || profileColors[1];
-
   return (
     <div
-      className={`relative flex flex-col justify-between rounded-xl border p-5 transition-all ${
+      className={`luxury-card relative flex flex-col justify-between rounded-2xl p-6 transition-all duration-300 ${
         isSelected
-          ? 'border-indigo-500 bg-[#121522] ring-2 ring-indigo-500/30 shadow-xl'
-          : 'border-[#1f2433] bg-[#0d0f17] hover:border-[#2e364d] hover:bg-[#10131e]'
+          ? 'border-amber-400/50 bg-[#12141e] ring-2 ring-amber-400/30 shadow-2xl'
+          : 'hover:border-white/[0.2] hover:bg-white/[0.02]'
       }`}
     >
       <div>
         {/* Concept Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#1f2433]">
-          <span
-            className={`rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${style.bg} ${style.border} ${style.text}`}
-          >
-            Concept {concept.conceptNumber}
+        <div className="flex items-center justify-between pb-3.5 border-b border-white/[0.06]">
+          <span className="rounded-full border border-amber-400/30 bg-amber-400/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-amber-200 tracking-wider uppercase">
+            Direction 0{concept.conceptNumber}
           </span>
-          <div className="flex items-center gap-1 text-[11px] text-slate-400">
+          <div className="flex items-center gap-1.5 text-[11px] font-mono text-zinc-400">
             <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
             <span>{concept.supportingEvidenceIds.length} Qloo Signals</span>
           </div>
@@ -55,14 +45,14 @@ export function ConceptCard({
 
         {/* Title & Tagline */}
         <div className="mt-4">
-          <h3 className="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors">
+          <h3 className="text-lg font-serif font-medium text-white group-hover:text-amber-200 transition-colors">
             {concept.title}
           </h3>
-          <p className="mt-1 text-xs text-slate-400 italic">{concept.tagline}</p>
+          <p className="mt-1 text-xs text-zinc-400 italic font-serif">{concept.tagline}</p>
         </div>
 
         {/* Creative Direction */}
-        <div className="mt-3.5 rounded-lg bg-[#090a0f] p-3 border border-[#1a1e2b] text-xs text-slate-300">
+        <div className="mt-3.5 rounded-xl bg-black/40 p-3.5 border border-white/[0.06] text-xs text-zinc-300 font-sans leading-relaxed">
           <p className="line-clamp-3">{concept.creativeDirection}</p>
         </div>
 
@@ -70,16 +60,16 @@ export function ConceptCard({
         <div className="mt-4 space-y-2 text-xs">
           {/* Headliner */}
           {headliner && (
-            <div className="flex items-center justify-between rounded-md bg-[#121520] p-2 border border-[#1f2433]">
+            <div className="flex items-center justify-between rounded-xl bg-white/[0.03] p-2.5 border border-white/[0.06]">
               <div className="flex items-center gap-2 truncate">
-                <Music className="h-3.5 w-3.5 text-indigo-400 shrink-0" />
-                <span className="font-semibold text-white truncate">{headliner.name}</span>
+                <Music className="h-3.5 w-3.5 text-amber-300 shrink-0" />
+                <span className="font-medium text-white truncate">{headliner.name}</span>
               </div>
               {headliner.evidenceIds[0] && (
                 <button
                   type="button"
                   onClick={() => onInspectEvidence?.(headliner.evidenceIds[0])}
-                  className="rounded bg-indigo-500/20 px-1.5 py-0.5 text-[10px] font-medium text-indigo-300 hover:bg-indigo-500/30 shrink-0"
+                  className="rounded-md bg-amber-400/[0.08] px-2 py-0.5 text-[10px] font-mono font-medium text-amber-200 hover:bg-amber-400/20 border border-amber-400/20 shrink-0 transition-colors"
                 >
                   Evidence
                 </button>
@@ -89,16 +79,16 @@ export function ConceptCard({
 
           {/* Brand Partner */}
           {brand && (
-            <div className="flex items-center justify-between rounded-md bg-[#121520] p-2 border border-[#1f2433]">
+            <div className="flex items-center justify-between rounded-xl bg-white/[0.03] p-2.5 border border-white/[0.06]">
               <div className="flex items-center gap-2 truncate">
-                <Tag className="h-3.5 w-3.5 text-pink-400 shrink-0" />
-                <span className="font-semibold text-white truncate">{brand.name}</span>
+                <Tag className="h-3.5 w-3.5 text-emerald-300 shrink-0" />
+                <span className="font-medium text-white truncate">{brand.name}</span>
               </div>
               {brand.evidenceIds[0] && (
                 <button
                   type="button"
                   onClick={() => onInspectEvidence?.(brand.evidenceIds[0])}
-                  className="rounded bg-pink-500/20 px-1.5 py-0.5 text-[10px] font-medium text-pink-300 hover:bg-pink-500/30 shrink-0"
+                  className="rounded-md bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-mono font-medium text-emerald-300 hover:bg-emerald-500/20 border border-emerald-500/20 shrink-0 transition-colors"
                 >
                   Evidence
                 </button>
@@ -108,16 +98,16 @@ export function ConceptCard({
 
           {/* F&B Place */}
           {vendor && (
-            <div className="flex items-center justify-between rounded-md bg-[#121520] p-2 border border-[#1f2433]">
+            <div className="flex items-center justify-between rounded-xl bg-white/[0.03] p-2.5 border border-white/[0.06]">
               <div className="flex items-center gap-2 truncate">
-                <MapPin className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                <span className="font-semibold text-white truncate">{vendor.name}</span>
+                <MapPin className="h-3.5 w-3.5 text-sky-300 shrink-0" />
+                <span className="font-medium text-white truncate">{vendor.name}</span>
               </div>
               {vendor.evidenceIds[0] && (
                 <button
                   type="button"
                   onClick={() => onInspectEvidence?.(vendor.evidenceIds[0])}
-                  className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-medium text-emerald-300 hover:bg-emerald-500/30 shrink-0"
+                  className="rounded-md bg-sky-500/[0.08] px-2 py-0.5 text-[10px] font-mono font-medium text-sky-300 hover:bg-sky-500/20 border border-sky-500/20 shrink-0 transition-colors"
                 >
                   Evidence
                 </button>
@@ -127,47 +117,47 @@ export function ConceptCard({
         </div>
 
         {/* Budget Allocation Summary */}
-        <div className="mt-4 pt-3 border-t border-[#1f2433]">
-          <div className="flex items-center justify-between text-xs mb-1.5">
-            <span className="text-slate-400">Total Planned Spend</span>
-            <span className="font-bold text-white">
+        <div className="mt-5 pt-3.5 border-t border-white/[0.06]">
+          <div className="flex items-center justify-between text-xs mb-2">
+            <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-wider">Exact Spend Allocation</span>
+            <span className="font-mono text-xs font-semibold text-white">
               ${concept.budgetAllocation.total.toLocaleString()} {currency}
             </span>
           </div>
-          <div className="flex h-2 w-full overflow-hidden rounded-full bg-[#181c28]">
+          <div className="flex h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
             <div
               style={{
                 width: `${(concept.budgetAllocation.talentAndEntertainment / concept.budgetAllocation.total) * 100}%`
               }}
-              className="bg-indigo-500"
+              className="bg-[#f7dfa5]"
               title="Talent"
             />
             <div
               style={{
                 width: `${(concept.budgetAllocation.venueAndProduction / concept.budgetAllocation.total) * 100}%`
               }}
-              className="bg-blue-500"
+              className="bg-[#d4af37]"
               title="Venue"
             />
             <div
               style={{
                 width: `${(concept.budgetAllocation.experienceDesign / concept.budgetAllocation.total) * 100}%`
               }}
-              className="bg-pink-500"
+              className="bg-[#ff6b4a]"
               title="Experience"
             />
             <div
               style={{
                 width: `${(concept.budgetAllocation.foodAndBeverage / concept.budgetAllocation.total) * 100}%`
               }}
-              className="bg-emerald-500"
+              className="bg-[#10b981]"
               title="F&B"
             />
             <div
               style={{
                 width: `${(concept.budgetAllocation.marketingAndPR / concept.budgetAllocation.total) * 100}%`
               }}
-              className="bg-amber-500"
+              className="bg-[#38bdf8]"
               title="Marketing"
             />
           </div>
@@ -175,18 +165,18 @@ export function ConceptCard({
       </div>
 
       {/* Select Action */}
-      <div className="mt-5 pt-3">
+      <div className="mt-6 pt-3.5">
         <button
           type="button"
           onClick={() => onSelect(concept)}
-          className={`w-full flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-semibold transition-all ${
+          className={`w-full flex items-center justify-between rounded-xl px-4 py-3 text-xs font-semibold transition-all ${
             isSelected
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
-              : 'bg-[#181c28] text-slate-200 hover:bg-indigo-600 hover:text-white'
+              ? 'bg-gradient-to-b from-[#f7dfa5] to-[#d4af37] text-zinc-950 shadow-xl shadow-amber-950/20'
+              : 'bg-white/[0.04] text-zinc-200 border border-white/[0.08] hover:bg-[#f7dfa5] hover:text-zinc-950 hover:border-transparent'
           }`}
         >
-          <span>{isSelected ? 'Selected Concept' : 'Develop This Concept'}</span>
-          <ArrowRight className="h-3.5 w-3.5" />
+          <span>{isSelected ? 'Active Selection' : 'Develop Comprehensive Strategy'}</span>
+          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
         </button>
       </div>
     </div>

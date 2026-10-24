@@ -3,65 +3,74 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Compass, Sparkles, Layers, ExternalLink } from 'lucide-react';
+import { Compass, Sparkles, Layers, ArrowUpRight } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#1f2433] bg-[#090a0f]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#08090d]/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-90">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600/20 text-indigo-400 ring-1 ring-indigo-500/30">
-            <Compass className="h-5 w-5 animate-pulse" />
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400/20 via-amber-500/10 to-transparent border border-amber-400/30 text-amber-300 shadow-sm transition-transform group-hover:scale-105">
+            <Compass className="h-4.5 w-4.5 transition-transform duration-500 group-hover:rotate-45" />
           </div>
           <div>
-            <span className="text-base font-bold tracking-tight text-white">Culture Radar</span>
-            <span className="ml-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-300">
-              Qloo Agentic
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-serif text-lg font-medium tracking-tight text-white">Culture Radar</span>
+              <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono tracking-wider uppercase bg-white/[0.06] text-zinc-400 border border-white/[0.08]">
+                v1.0 • Taste AI
+              </span>
+            </div>
+            <p className="text-[10px] text-zinc-500 tracking-wide font-sans hidden md:block">
+              Empirical Event Strategist
+            </p>
           </div>
         </Link>
 
         {/* Center: Live Qloo Taste Graph Status */}
-        <div className="hidden md:flex items-center gap-2">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-[#0d1419] px-2.5 py-1 text-[11px] font-medium text-emerald-300">
+        <div className="hidden lg:flex items-center gap-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-950/20 px-3 py-1 text-[11px] font-mono text-emerald-300">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Qloo Taste Graph: Active</span>
+            <span className="tracking-tight">QLOO TASTE GRAPH • CONNECTED</span>
           </div>
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex items-center gap-1 sm:gap-2">
+        <nav className="flex items-center gap-2">
           <Link
             href="/"
-            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-              pathname === '/' ? 'bg-[#181c28] text-white' : 'text-slate-400 hover:text-white'
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+              pathname === '/' 
+                ? 'bg-white/[0.08] text-white shadow-inner' 
+                : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
             }`}
           >
-            <Layers className="h-3.5 w-3.5" />
+            <Layers className="h-3.5 w-3.5 text-zinc-400" />
             <span>Showcase</span>
           </Link>
 
           <Link
             href="/brief"
-            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-              pathname === '/brief' ? 'bg-[#181c28] text-white' : 'text-slate-400 hover:text-white'
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+              pathname === '/brief' 
+                ? 'bg-amber-500/20 text-amber-200 border border-amber-500/30' 
+                : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
             }`}
           >
-            <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
-            <span>New Brief</span>
+            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+            <span>Build Strategy</span>
           </Link>
 
           <a
-            href="https://docs.qloo.com/reference/api-overview"
+            href="https://qloo.devpost.com/"
             target="_blank"
             rel="noreferrer"
-            className="hidden sm:flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:text-white"
+            className="hidden sm:flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:text-white hover:bg-white/[0.04]"
           >
-            <span>Qloo Docs</span>
-            <ExternalLink className="h-3 w-3" />
+            <span>Devpost Entry</span>
+            <ArrowUpRight className="h-3 w-3 text-zinc-500" />
           </a>
         </nav>
       </div>

@@ -1,6 +1,25 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AppProviders } from '@/components/providers';
+import { Plus_Jakarta_Sans, Playfair_Display, JetBrains_Mono } from 'next/font/google';
+
+const sansFont = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const serifFont = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  display: 'swap',
+});
+
+const monoFont = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Culture Radar | AI Cultural Intelligence & Event Strategy Agent',
@@ -17,10 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className={`dark ${sansFont.variable} ${serifFont.variable} ${monoFont.variable}`} suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className="bg-[#090a0f] text-slate-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200"
+        className="bg-[#08090d] text-slate-100 font-sans antialiased selection:bg-amber-500/20 selection:text-amber-200"
       >
         <AppProviders>{children}</AppProviders>
       </body>
