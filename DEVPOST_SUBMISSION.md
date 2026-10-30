@@ -10,7 +10,7 @@
 - **Project Name:** Culture Radar
 - **Tagline:** Autonomous AI Event Strategist Powered by Qloo Cultural Intelligence & Deterministic Financial Balancing
 - **Primary Category / Track:** Agentic Applications / Culture & Taste AI
-- **Repository:** *[Insert your public GitHub repo URL]*
+- **Repository:** https://github.com/Breakdown-10/Cultural-Radar.git
 - **Live Demo URL:** *[Insert your Vercel deployment URL]*
 - **Video Demo (YouTube/Vimeo):** *[Insert your public YouTube/Vimeo video URL]*
 
